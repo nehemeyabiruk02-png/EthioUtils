@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthioUtils - Multi-Utility Hub for Ethiopia</title>
+    <!-- Corrected Tailwind CSS for modern styling -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Corrected FontAwesome for clean icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-emerald-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-400 p-2 rounded-lg text-emerald-900 font-bold">
+                    <i class="fa-solid fa-gears text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">EthioUtils</h1>
+                    <p class="text-xs text-emerald-100">Essential tools for daily Ethiopian life</p>
+                </div>
+            </div>
+            <nav class="flex gap-2">
+                <button onclick="switchTab('tax-calc')" id="btn-tax-calc" class="tab-btn px-4 py-2 rounded-lg font-medium bg-emerald-700 text-white transition">
+                    <i class="fa-solid fa-calculator mr-2"></i>Tax Calculator
+                </button>
+                <button onclick="switchTab('cal-conv')" id="btn-cal-conv" class="tab-btn px-4 py-2 rounded-lg font-medium text-emerald-100 hover:bg-emerald-700 transition">
+                    <i class="fa-solid fa-calendar-days mr-2"></i>Date Converter
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8">
+        
+        <!-- SECTION 1: TAX CALCULATOR -->
+        <section id="tab-tax-calc" class="tab-content block">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-wallet text-emerald-600"></i>
+                        Ethiopian Salary & Income Tax Calculator
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-1">Calculate net pay, income tax, and pension deductions using standard Ethiopian tax proclamations.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left: Inputs -->
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Gross Monthly Salary (ETB)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3.5 text-slate-400 font-medium text-sm">ETB</span>
+                                <input type="number" id="gross-salary" value="15000" min="0" oninput="calculateTax()"
+                                    class="w-full bg-slate-50 border border-slate-300 rounded-xl py-3 pl-12 pr-4 font-semibold text-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="include-pension" checked onchange="calculateTax()"
+                                    class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300">
+                                <div>
+                                    <span class="block text-sm font-medium text-slate-800">Deduct Employee Pension (7%)</span>
+                                    <span class="block text-xs text-slate-500">Applicable for permanent government and private sector employees.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Right: Results breakdown -->
+                    <div class="bg-slate-900 text-white rounded-2xl p-6 flex flex-col justify-between shadow-inner">
+                        <div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Take-Home Pay (Net Salary)</span>
+                            <div class="text-4xl font-extrabold text-emerald-400 mt-1 mb-6">
+                                <span id="res-net-salary">0.00</span> <span class="text-lg font-medium text-slate-300">ETB</span>
+                            </div>
+
+                            <div class="space-y-3 border-t border-slate-800 pt-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Gross Salary:</span>
+                                    <span id="res-gross" class="font-semibold text-slate-200">0.00 ETB</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Income Tax (AYE):</span>
+                                    <span id="res-tax" class="font-semibold text-amber-400">-0.00 ETB</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-400">Employee Pension (7%):</span>
+                                    <span id="res-pension" class="font-semibold text-amber-400">-0.00 ETB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 border-t border-slate-800 pt-4 space-y-2">
+                            <div class="flex justify-between text-xs text-slate-400">
+                                <span>Employer Pension (11%):</span>
+                                <span id="res-employer-pension">0.00 ETB</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-400">
+                                <span>Total Company Cost:</span>
+                                <span id="res-total-cost">0.00 ETB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CALENDAR CONVERTER -->
+        <section id="tab-cal-conv" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar text-emerald-600"></i>
+                        Simplified Date Converter & National Holidays
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-1">Convert calendar systems quickly or keep track of major national dates.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left: Interactive Converter Tool -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base mb-2"><i class="fa-solid fa-arrow-right-arrow-left text-emerald-600 mr-2"></i>Quick Calendar Check</h3>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Pick Gregorian (European) Date</label>
+                            <input type="date" id="gregorian-date" onchange="convertDate()"
+                                class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-200">
+                            <span class="block text-xs font-semibold text-slate-500 uppercase mb-1">Approximate Ethiopian Date equivalent</span>
+                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 font-bold text-center text-lg" id="ethiopian-result">
+                                Select a date above
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Holiday List Component -->
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-star text-amber-500 mr-2"></i>Major National Holidays</h3>
+                        <div class="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+                            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <div><span class="font-semibold text-sm block text-slate-800">Enkutatash (New Year)</span><span class="text-xs text-slate-400">Meskerem 1</span></div>
+                                <span class="text-xs font-medium bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">Sept 11 / 12</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
